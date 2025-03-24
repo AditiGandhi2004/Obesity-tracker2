@@ -7,56 +7,79 @@
           <div class="col-md-6 offset-md-3">
             <div class="list-group">
               <a class="list-group-item list-group-item-action" (click)="addFoodManually()">Add Food To Journal</a>
+              <a class="list-group-item list-group-item-action" (click)="searchForAFood()">Search for a Food</a>
             </div>
           </div>
         </div>
       </div>
-
       <div id="step3" *ngIf="step === 3">
-
         <div class="text-center">
           <p class="lead" *ngIf="loading">Loading...</p>
         </div>
-
         <form name="form" #f="ngForm" *ngIf="!loading">
-          <!-- ✅ Updated: Food Name Dropdown -->
+          <!-- Updated: Food Name Dropdown with onchange event -->
           <div class="form-group">
             <label for="foodName">Food Name</label>
-            <select class="form-control" name="foodName" [(ngModel)]="food.name" required>
-              <option *ngFor="let item of foodOptions" [value]="item">{{ item }}</option>
+            <select 
+              class="form-control" 
+              [(ngModel)]="food.name" 
+              (ngModelChange)="onFoodSelect($event)"
+              name="foodName"
+              required
+            >
+              <option value="">Select a Food Item</option>
+              <option *ngFor="let foodName of foodOptions" [value]="foodName">{{ foodName }}</option>
             </select>
           </div>
-
+        
           <!-- Nutrients Input Fields -->
           <div class="form-row pb-3" *ngFor="let nutrient of food.nutrients">
             <div class="col-md-10">
               <label for="{{nutrient.name}}-value">{{nutrient.name}}</label>
-              <input type="number" class="form-control" name="{{nutrient.name}}-value" [(ngModel)]="nutrient.value" />
+              <input 
+                type="number" 
+                class="form-control" 
+                name="{{nutrient.name}}-value" 
+                [(ngModel)]="nutrient.value" 
+                readonly
+              />
             </div>
             <div class="col-md-2">
               <label for="{{nutrient.name}}-units">Units</label>
-              <input type="text" class="form-control" name="{{nutrient.name}}-units" [(ngModel)]="nutrient.units" />
+              <input 
+                type="text" 
+                class="form-control" 
+                name="{{nutrient.name}}-units" 
+                [(ngModel)]="nutrient.units" 
+                readonly
+              />
             </div>
           </div>
-
+        
           <!-- Servings -->
           <div class="form-group">
             <label for="servings">Servings</label>
             <input type="number" class="form-control" name="servings" [(ngModel)]="food.servings" />
           </div>
-
+        
           <!-- Date Picker -->
           <div class="form-group">
             <label for="date">Consumption Date</label>
-            <p-calendar [(ngModel)]="food.consumptionDate" name="date" inputId="date" showTime="true" hourFormat="12"></p-calendar>
+            <p-calendar 
+              [(ngModel)]="food.consumptionDate" 
+              name="date" 
+              inputId="date" 
+              showTime="true" 
+              hourFormat="12"
+            ></p-calendar>
           </div>
-
+        
           <!-- Notes -->
           <div class="form-group">
             <label for="notes">Notes</label>
             <input type="text" class="form-control" name="notes" [(ngModel)]="food.notes" />
           </div>
-
+        
           <!-- Buttons -->
           <div class="form-group">
             <button class="btn btn-primary" (click)="addFoodEntry()">Save Food Entry</button>
@@ -67,6 +90,3 @@
     </div>
   </div>
 </div>
-
-
-
